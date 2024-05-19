@@ -1,24 +1,26 @@
 import React from 'react';
 import usersFromServer from '../../api/users';
+import cn from 'classnames';
+import { Todo } from '../../types';
+import { UserInfo } from '../UserInfo';
 
 interface Props {
-  id: number;
-  title: string;
-  completed: boolean;
-  userId: number;
+  todo: Todo;
 }
 
-export const TodoInfo: React.FC<Props> = ({ id, title, completed, userId }) => {
+export const TodoInfo: React.FC<Props> = ({ todo }) => {
+  const user = usersFromServer.find(u => u.id === todo.userId);
+
   return (
     <article
-      data-id={id}
-      className={`TodoInfo TodoInfo${completed && '--completed'}`}
+      data-id={todo.id}
+      className={cn('TodoInfo', {
+        'TodoInfo--completed': todo.completed,
+      })}
     >
-      <h2 className="TodoInfo__title">{title}</h2>
+      <h2 className="TodoInfo__title">{todo.title}</h2>
 
-      <a className="UserInfo" href="mailto:Sincere@april.biz">
-        {usersFromServer.find(user => user.id === userId)?.name}
-      </a>
+      {user && <UserInfo user={user} />}
     </article>
   );
 };

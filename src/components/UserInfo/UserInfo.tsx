@@ -1,18 +1,14 @@
-import usersFromServer from '../../api/users';
+import React from 'react';
+import { User } from '../../types';
 
-export const UserInfo = () => {
+interface Props {
+  user: User;
+}
+
+export const UserInfo: React.FC<Props> = ({ user }) => {
   return (
-    <select data-cy="userSelect">
-      {usersFromServer.map((user: { id: number; name: string }) => (
-        <option
-          key={user.id}
-          value={user.id}
-          selected={!user.id}
-          disabled={!user.id}
-        >
-          {user.name}
-        </option>
-      ))}
-    </select>
+    <a className="UserInfo" href={`mailto:${user.email}`}>
+      {user.name}
+    </a>
   );
 };
